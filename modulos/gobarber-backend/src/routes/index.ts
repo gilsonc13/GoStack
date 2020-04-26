@@ -1,11 +1,13 @@
 import { Router, json } from 'express';
-import appointmenstsReouter from './appointments.routes';
-import usersReouter from './users.routes';
+import appointmenstsRouter from './appointments.routes';
+import usersRouter from './users.routes';
+import sessionsRouter from './sessions.routes';
 
 const routes = Router();
 
 routes.use(json());
-routes.use('/appointments', appointmenstsReouter);
-routes.use('/users', usersReouter);
+routes.use('/appointments', appointmenstsRouter);
+routes.use('/users', usersRouter);
+routes.use('/sessions', sessionsRouter);
 
 export default routes;
