@@ -3,5 +3,7 @@ modulos/conceitos-nodejs/node_modules
 modulos/conceitos-react/node_modules
 modulos/primeiro-projeto-node/node_modules
 modulos/gobarber-backend/node_modules
+modulos/gobarber-backend/upload/*
+!modulos/gobarber-backend/upload/.gitkeep
 desafios/conceitos-nodejs/node_modules
 desafios/conceitos-reactjs/node_modules
