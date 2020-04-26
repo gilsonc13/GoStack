@@ -4,6 +4,8 @@ import { hash } from 'bcryptjs';
 
 import User from '../models/User';
 
+import AppError from '../errors/AppError';
+
 interface Request {
   name: string;
   email: string;
@@ -17,7 +19,7 @@ class CreateUserService {
     const existUser = await userRepository.findOne({ where: { email } });
 
     if (existUser) {
-      throw new Error('Email address alredy used!');
+      throw new AppError('Email address alredy used!');
     }
 
     const passwordHash = await hash(password, 8);
