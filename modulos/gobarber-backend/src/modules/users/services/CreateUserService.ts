@@ -1,21 +1,24 @@
-import { getRepository } from 'typeorm';
-
 import { hash } from 'bcryptjs';
-
+import { inject, injectable } from 'tsyringe';
 import AppError from '@shared/errors/AppError';
 import User from '../infra/typeorm/entities/User';
+import IUsersRepository from '../repositories/IUsersRepository';
 
-interface Request {
+interface IRequest {
   name: string;
   email: string;
   password: string;
 }
 
+@injectable()
 class CreateUserService {
-  public async execute({ name, email, password }: Request): Promise<User> {
-    const userRepository = getRepository(User);
+  constructor(
+    @inject('UsersRepository')
+    private usersRepository: IUsersRepository,
+  ) {}
 
-    const existUser = await userRepository.findOne({ where: { email } });
+  public async execute({ name, email, password }: IRequest): Promise<User> {
+    const existUser = await this.usersRepository.findByEmail(email);
 
     if (existUser) {
       throw new AppError('Email address alredy used!');
@@ -23,13 +26,11 @@ class CreateUserService {
 
     const passwordHash = await hash(password, 8);
 
-    const user = userRepository.create({
+    const user = await this.usersRepository.create({
       name,
       email,
       password: passwordHash,
     });
-
-    await userRepository.save(user);
 
     return user;
   }
